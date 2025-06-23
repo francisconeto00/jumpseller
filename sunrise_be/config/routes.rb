@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   namespace :api do
-    get "cities/index"
+   get "sun_events/:id", to: "sun_events#show", as: :sun_event
+
+    get "cities", to: "cities#index"
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

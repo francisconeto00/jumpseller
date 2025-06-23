@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_23_065852) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_23_162714) do
   create_table "cities", force: :cascade do |t|
     t.string "name"
     t.string "country"
@@ -19,4 +19,27 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_23_065852) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "sunrises", force: :cascade do |t|
+    t.integer "city_id", null: false
+    t.date "date"
+    t.time "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id", "date"], name: "index_sunrises_on_city_id_and_date", unique: true
+    t.index ["city_id"], name: "index_sunrises_on_city_id"
+  end
+
+  create_table "sunsets", force: :cascade do |t|
+    t.integer "city_id", null: false
+    t.date "date"
+    t.time "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["city_id", "date"], name: "index_sunsets_on_city_id_and_date", unique: true
+    t.index ["city_id"], name: "index_sunsets_on_city_id"
+  end
+
+  add_foreign_key "sunrises", "cities"
+  add_foreign_key "sunsets", "cities"
 end

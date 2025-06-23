@@ -30,3 +30,5 @@ sunrise_be/tmp/storage/*
 
 # Ignore master key for decrypting credentials and more.
 sunrise_be/config/master.key
+
+*/.env
