@@ -32,3 +32,31 @@ sunrise_be/tmp/storage/*
 sunrise_be/config/master.key
 
 */.env
+
+#FE
+# Logs
+sunrise_fe/logs
+sunrise_fe/*.log
+sunrise_fe/npm-debug.log*
+sunrise_fe/yarn-debug.log*
+sunrise_fe/yarn-error.log*
+sunrise_fe/pnpm-debug.log*
+sunrise_fe/lerna-debug.log*
+
+sunrise_fe/node_modules
+sunrise_fe/dist
+sunrise_fe/dist-ssr
+sunrise_fe/*.local
+
+# Editor directories and files
+sunrise_fe/.vscode/*
+!sunrise_fe/.vscode/extensions.json
+sunrise_fe/.idea
+sunrise_fe/.DS_Store
+sunrise_fe/*.suo
+sunrise_fe/*.ntvs*
+sunrise_fe/*.njsproj
+sunrise_fe/*.sln
+sunrise_fe/*.sw?
+
+
