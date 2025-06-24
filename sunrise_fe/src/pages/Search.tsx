@@ -6,6 +6,7 @@ import { getCities } from "../services/cities";
 import type { CitiesResponse } from "../types/city";
 import CityResultsGrid from "../components/CityResultsGrid";
 import DateRangeInput from "../components/common/QueryDateRangePicker";
+import RootLayout from "../components/common/RootLayout";
 
 export default function Search() {
   const { getQueryParam, setQueryParam } = useQueryParams();
@@ -17,8 +18,10 @@ export default function Search() {
   const search = qParam || "";
 
   const fetchData = async () => {
-    const response = await getCities({ search, page });
-    setResults(response);
+    if (search != "") {
+      const response = await getCities({ search, page });
+      setResults(response);
+    }
   };
 
   useEffect(() => {
@@ -34,10 +37,7 @@ export default function Search() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold text-rose-600">
-        Francisco Neto {"<>"} Jumpseller{" "}
-      </h1>
+    <RootLayout>
       <div className="flex flex-row justify-evenly items-center mt-10">
         <SearchInput />
         <DateRangeInput />
@@ -52,8 +52,10 @@ export default function Search() {
           ) : (
             <p className=" text-center">No cities found.</p>
           )
-        ) : null}
+        ) : (
+          <p className=" text-center">Please search for a City.</p>
+        )}
       </div>
-    </div>
+    </RootLayout>
   );
 }

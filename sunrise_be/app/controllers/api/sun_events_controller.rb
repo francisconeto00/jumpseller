@@ -1,3 +1,4 @@
+include TimeFormatter
 module Api
   class SunEventsController < ApplicationController
     def show
@@ -29,17 +30,21 @@ module Api
 
       unless city
         Rails.logger.info("[SunEventsController] Params: #{params.inspect} | NO DATA (City not found)")
-        return render json: { sunrise: nil, sunset: nil }, status: :ok
+        return render json: { error: "City not found" }, status: :not_found
       end
 
       range = (start_date..end_date).to_a
 
       existing_sunrises = Sunrise.where(city_id: city.id, date: range).pluck(:date, :value).to_h.transform_keys(&:to_s)
       existing_sunsets = Sunset.where(city_id: city.id, date: range).pluck(:date, :value).to_h.transform_keys(&:to_s)
+      existing_dawns = Dawn.where(city_id: city.id, date: range).pluck(:date, :value).to_h.transform_keys(&:to_s)
+      existing_dusks = Dusk.where(city_id: city.id, date: range).pluck(:date, :value).to_h.transform_keys(&:to_s)
+      existing_golden_hours = GoldenHour.where(city_id: city.id, date: range).pluck(:date, :value).to_h.transform_keys(&:to_s)
 
       missing_dates = range.select do |date|
         d_str = date.to_s
-        !existing_sunrises.key?(d_str) || !existing_sunsets.key?(d_str)
+        !existing_sunrises.key?(d_str) || !existing_sunsets.key?(d_str) ||
+        !existing_dawns.key?(d_str) || !existing_dusks.key?(d_str) || !existing_golden_hours.key?(d_str)
       end
 
       if missing_dates.any?
@@ -50,15 +55,22 @@ module Api
         fetched_data&.each do |date, data|
           existing_sunrises[date] = data[:sunrise]
           existing_sunsets[date] = data[:sunset]
+          existing_dawns[date] = data[:dawn]
+          existing_dusks[date] = data[:dusk]
+          existing_golden_hours[date] = data[:golden_hour]
         end
       end
 
-     result = range.map do |date|
+      result = range.map do |date|
         d = date.to_s
         {
           date: d,
-          sunrise: existing_sunrises[d]&.strftime("%H:%M:%S"),
-          sunset: existing_sunsets[d]&.strftime("%H:%M:%S")
+          sunrise: format_time(existing_sunrises[d]),
+          sunset: format_time(existing_sunsets[d]),
+          dawn: format_time(existing_dawns[d]),
+          dusk: format_time(existing_dusks[d]),
+          golden_hour: format_time(existing_golden_hours[d])
+
         }
       end
 

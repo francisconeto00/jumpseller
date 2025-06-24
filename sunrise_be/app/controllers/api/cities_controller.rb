@@ -3,8 +3,8 @@ module Api
     def index
       cities = City.all
 
-      if params[:name].present?
-        cities = cities.where("LOWER(name) LIKE ?", "#{params[:name].downcase}%")
+      if params[:q].present?
+        cities = cities.where("LOWER(name) LIKE ?", "#{params[:q].downcase}%")
       end
 
       # Pagination (defaults 1)
