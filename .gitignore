@@ -7,9 +7,6 @@
 # Ignore bundler config.
 sunrise_be/.bundle
 
-# Ignore all environment files.
-sunrise_be/.env*
-
 # Ignore all logfiles and tempfiles.
 sunrise_be/log/*
 sunrise_be/tmp/*
@@ -32,7 +29,7 @@ sunrise_be/tmp/storage/*
 sunrise_be/config/master.key
 
 */.env
-
+!*/.env.example
 #FE
 # Logs
 sunrise_fe/logs
